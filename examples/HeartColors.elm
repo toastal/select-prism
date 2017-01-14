@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Html exposing (..)
-import Html.SelectPrism exposing (selectp)
+import Html.SelectPrism exposing (selectp, selectpm)
 import Monocle.Prism exposing (Prism)
 
 
@@ -15,13 +15,49 @@ main =
 
 
 view : Model -> Html Msg
-view { selectedColor } =
-    div []
-        [ h1 [] [ text "Select A Heart Color" ]
-        , h3 [] [ text <| "Current : " ++ colorp.reverseGet selectedColor ]
-          -- Here's the `selectp` in the view
-        , selectp colorp ChangeColor selectedColor [] colorOptions
-        ]
+view { selectedColor, selectedColors } =
+    let
+        okdColors : List Color
+        okdColors =
+            List.foldr
+                (\rc ->
+                    case rc of
+                        Ok c ->
+                            (::) c
+
+                        _ ->
+                            identity
+                )
+                []
+                selectedColors
+    in
+        div []
+            [ h1 [] [ text "Select A Heart Color" ]
+            , h3 []
+                [ text <|
+                    case Result.map colorp.reverseGet selectedColor of
+                        Ok color ->
+                            "Current: " ++ color
+
+                        Err e ->
+                            e
+                ]
+              -- Here's the `selectp` in the view
+            , selectp colorp
+                ChangeColor
+                (Result.withDefault Red selectedColor)
+                []
+                colorOptions
+            , h3 []
+                [ text
+                    << (++) "Current: "
+                    << String.join ", "
+                  <|
+                    List.map colorp.reverseGet okdColors
+                ]
+              -- Here's the `selectpm' in the view
+            , selectpm colorp ChangeColors okdColors [] colorOptions
+            ]
 
 
 
@@ -74,21 +110,31 @@ colorp =
 
 
 type alias Model =
-    { selectedColor : Color }
+    { selectedColor : Result String Color
+    , selectedColors : List (Result String Color)
+    }
 
 
 initModel : Model
 initModel =
-    { selectedColor = Red }
+    { selectedColor = Ok Red
+    , selectedColors = [ Ok Blue, Ok Green ]
+    }
 
 
 type Msg
-    = ChangeColor Color
+    = ChangeColor (Result String Color)
+    | ChangeColors (List (Result String Color))
 
 
 update : Msg -> Model -> Model
-update (ChangeColor color) model =
-    { model | selectedColor = color }
+update msg model =
+    case msg of
+        ChangeColor rcolor ->
+            { model | selectedColor = rcolor }
+
+        ChangeColors rcolors ->
+            Debug.log "ChangeColors" { model | selectedColors = rcolors }
 
 
 colorOptions : List ( String, Color )
