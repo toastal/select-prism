@@ -1,4 +1,4 @@
-module Main exposing (..)
+module HeartColors exposing (..)
 
 import Html exposing (..)
 import Html.SelectPrism exposing (selectp, selectpm)

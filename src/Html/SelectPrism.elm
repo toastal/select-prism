@@ -18,14 +18,14 @@ comparable. However, Elm does everything through strings -- which is
 why we're using the `Prism`. That `Prism` onus is on you. The args are:
 
 1. [Prism](http://package.elm-lang.org/packages/arturopala/elm-monocle/latest/Monocle-Prism)
-   from a `String` to our thing
+   from a `String` to our thing `a`
 2. A function from the attempt to get--`Result String a`, where `a` is
    our thing--to a msg for the onChange
 3. The selected value
 4. List of `Html.Attributes` for the `<select>` so you can have
    custom classes, etc.
 5. List tuples of `( String, a )` where the `String` is the label
-   for the option and the a is our thing.
+   for the option and the `a` is our thing.
 -}
 selectp : Prism String a -> (Result String a -> msg) -> a -> List (Attribute msg) -> List ( String, a ) -> Html msg
 selectp prism msger selected_ attrs labelValues =
