@@ -17,6 +17,10 @@ main =
 view : Model -> Html Msg
 view { selectedColor, selectedColors } =
     let
+        selectedColorWDef : Color
+        selectedColorWDef =
+            Result.withDefault Red selectedColor
+
         okdColors : List Color
         okdColors =
             List.foldr
@@ -43,11 +47,7 @@ view { selectedColor, selectedColors } =
                             e
                 ]
               -- Here's the `selectp` in the view
-            , selectp colorp
-                ChangeColor
-                (Result.withDefault Red selectedColor)
-                []
-                colorOptions
+            , selectp colorp ChangeColor selectedColorWDef [] colorOptions
             , h3 []
                 [ text
                     << (++) "Current: "
@@ -134,7 +134,7 @@ update msg model =
             { model | selectedColor = rcolor }
 
         ChangeColors rcolors ->
-            Debug.log "ChangeColors" { model | selectedColors = rcolors }
+            { model | selectedColors = rcolors }
 
 
 colorOptions : List ( String, Color )
