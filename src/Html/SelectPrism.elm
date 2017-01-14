@@ -1,8 +1,10 @@
 module Html.SelectPrism exposing (selectp, selectpm)
 
 {-|
-`selectp` is cool
+`selectp` and `selectpm` allow a user to push ADTs in and
+get ADTs out of a `<select>`
 
+# Selects
 @docs selectp, selectpm
 -}
 

@@ -1,6 +1,6 @@
 {
-    "version": "1.0.0",
-    "summary": "Use a Prism to handle <select> stringy-ness",
+    "version": "1.0.1",
+    "summary": "Use a Monocle Prism to handle <select> conflict between ADTs and Strings",
     "repository": "https://github.com/toastal/select-prism.git",
     "license": "MIT",
     "source-directories": [
