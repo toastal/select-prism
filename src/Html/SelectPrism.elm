@@ -1,11 +1,13 @@
 module Html.SelectPrism exposing (selectp, selectpm)
 
-{-|
-`selectp` and `selectpm` allow a user to push ADTs in and
+{-| `selectp` and `selectpm` allow a user to push ADTs in and
 get ADTs out of a `<select>`
 
+
 # Selects
+
 @docs selectp, selectpm
+
 -}
 
 import Html exposing (Attribute, Html, option, select, text)
@@ -19,15 +21,16 @@ import Monocle.Prism exposing (Prism)
 comparable. However, Elm does everything through strings -- which is
 why we're using the `Prism`. That `Prism` onus is on you. The args are:
 
-1. [Prism](http://package.elm-lang.org/packages/arturopala/elm-monocle/latest/Monocle-Prism)
-   from a `String` to our thing `a`
-2. A function from the attempt to get--`Result String a`, where `a` is
-   our thing--to a msg for the onChange
-3. The selected value
-4. List of `Html.Attributes` for the `<select>` so you can have
-   custom classes, etc.
-5. List tuples of `( String, a )` where the `String` is the label
-   for the option and the `a` is our thing.
+1.  [Prism](http://package.elm-lang.org/packages/arturopala/elm-monocle/latest/Monocle-Prism)
+    from a `String` to our thing `a`
+2.  A function from the attempt to get--`Result String a`, where `a` is
+    our thing--to a msg for the onChange
+3.  The selected value
+4.  List of `Html.Attributes` for the `<select>` so you can have
+    custom classes, etc.
+5.  List tuples of `( String, a )` where the `String` is the label
+    for the option and the `a` is our thing.
+
 -}
 selectp : Prism String a -> (Result String a -> msg) -> a -> List (Attribute msg) -> List ( String, a ) -> Html msg
 selectp prism msger selected_ attrs labelValues =
@@ -39,7 +42,7 @@ selectp prism msger selected_ attrs labelValues =
                     Ok y
 
                 _ ->
-                    Err <| "Failed to get a valid option from " ++ toString x
+                    Err <| "Failed to get a valid option from " ++ x
 
         change : Decoder msg
         change =
@@ -53,8 +56,8 @@ selectp prism msger selected_ attrs labelValues =
                 ]
                 [ text labl ]
     in
-        select (on "change" change :: attrs) <|
-            List.map opt labelValues
+    select (on "change" change :: attrs) <|
+        List.map opt labelValues
 
 
 {-| Like `selectp`, but a `<select multiple>` which takes a list of
@@ -73,7 +76,7 @@ selectpm prism msger selecteds attrs labelValues =
                     Ok y
 
                 _ ->
-                    Err <| "Failed to get a valid option from " ++ toString x
+                    Err <| "Failed to get a valid option from " ++ x
 
         -- Don't ask
         change : Decoder msg
@@ -81,7 +84,7 @@ selectpm prism msger selecteds attrs labelValues =
             let
                 loop idx xs =
                     Decode.maybe
-                        (Decode.field (toString idx)
+                        (Decode.field (String.fromInt idx)
                             (Decode.field "value" Decode.string
                                 |> Decode.map resultFromString
                             )
@@ -91,9 +94,9 @@ selectpm prism msger selecteds attrs labelValues =
                                 >> Maybe.withDefault (Decode.succeed xs)
                             )
             in
-                loop 0 []
-                    |> Decode.at [ "target", "selectedOptions" ]
-                    |> Decode.map (List.reverse >> msger)
+            loop 0 []
+                |> Decode.at [ "target", "selectedOptions" ]
+                |> Decode.map (List.reverse >> msger)
 
         opt : ( String, a ) -> Html msg
         opt ( labl, val ) =
@@ -103,5 +106,5 @@ selectpm prism msger selecteds attrs labelValues =
                 ]
                 [ text labl ]
     in
-        select (on "change" change :: multiple True :: attrs) <|
-            List.map opt labelValues
+    select (on "change" change :: multiple True :: attrs) <|
+        List.map opt labelValues
