@@ -1,37 +1,28 @@
 # Elm
-#######
-
 /elm-stuff
-
+/documentation.json
 
 # Node
-#######
-
 node_modules/
+package-lock.json
 
+# Nix
+/result
+.direnv/
 
 # Logs
-########
-
 /logs
 *.log
 
-
 # Editors
-##########
-
 *.sw[po]
 
-
-# Dist
-#######
-
-/dist
-
+# NO to Microsoft
+*.code-workspace
+.github/
+.vscode/
 
 # OS generated files
-######################
-
 .DS_Store
 .DS_Store?
 ._*

@@ -1,3 +1,20 @@
+{-
+   Copyright © 2017–2021 toastal <toastal@posteo.net> (https://toast.al)
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-}
+
+
 module Html.SelectPrism exposing (selectp, selectpm)
 
 {-| `selectp` and `selectpm` allow a user to push ADTs in and
@@ -19,7 +36,7 @@ import Monocle.Prism exposing (Prism)
 
 {-| `selectp` is wrapping up the idea of select box from a generic
 comparable. However, Elm does everything through strings -- which is
-why we're using the `Prism`. That `Prism` onus is on you. The args are:
+why we’re using the `Prism`. That `Prism` onus is on you. The args are:
 
 1.  [Prism](http://package.elm-lang.org/packages/arturopala/elm-monocle/latest/Monocle-Prism)
     from a `String` to our thing `a`
@@ -63,8 +80,8 @@ selectp prism msger selected_ attrs labelValues =
 {-| Like `selectp`, but a `<select multiple>` which takes a list of
 selected values and the Msg needs to be a list of results. Note:
 [`selectOptions`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement#Browser_compatibility)
-isn't support in Internet Explorer and I don't care enough to support
-it (and maybe you shouldn't either).
+isn’t support in Internet Explorer and I don’t care enough to support
+it (and maybe you shouldn’t either).
 -}
 selectpm : Prism String a -> (List (Result String a) -> msg) -> List a -> List (Attribute msg) -> List ( String, a ) -> Html msg
 selectpm prism msger selecteds attrs labelValues =
@@ -78,7 +95,7 @@ selectpm prism msger selecteds attrs labelValues =
                 _ ->
                     Err <| "Failed to get a valid option from " ++ x
 
-        -- Don't ask
+        -- Don’t ask
         change : Decoder msg
         change =
             let
