@@ -3,7 +3,7 @@
     "name": "toastal/select-prism",
     "summary": "Use a Monocle Prism to handle <select> conflict between ADTs and Strings",
     "license": "Apache-2.0",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "exposed-modules": [
         "Html.SelectPrism"
     ],
